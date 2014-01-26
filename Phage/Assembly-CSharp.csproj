@@ -50,6 +50,7 @@
      <Compile Include="Assets\CountDownTimer.cs" />
      <Compile Include="Assets\GameMonitor.cs" />
      <Compile Include="Assets\GameMusic.cs" />
+     <Compile Include="Assets\GamePlayMusic.cs" />
      <Compile Include="Assets\Initialize.cs" />
      <Compile Include="Assets\LevelButton.cs" />
      <Compile Include="Assets\Timer.cs" />
