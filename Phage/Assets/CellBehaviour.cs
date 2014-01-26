@@ -11,7 +11,7 @@ public class CellBehaviour : MonoBehaviour {
 	public float circularSpreadValue = 0.1f;
 	public float virusExplosionSpeed = 1000;
 	public float CellDuplicationInterval = 10; //seconds
-	public float VirusAttachTimeLimit = 6; //seconds
+	float VirusAttachTimeLimit ; //seconds
 	public int life = 1;
 
 	private float TimeElapsed = 0;
@@ -29,6 +29,8 @@ public class CellBehaviour : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		float random_rotate_z = Random.Range(random_min, random_max);
 		transform.Rotate(0f, 0.0f, random_rotate_z);
+
+		VirusAttachTimeLimit = Random.Range (5,8);
 	}
 
 	void Start () {
@@ -56,18 +58,6 @@ public class CellBehaviour : MonoBehaviour {
 	}
 
 
-	// Destroy overlapping cells 
-//	void OnCollisionEnter2D(Collision2D coll) {
-//		Debug.Log ("I hit a: " + coll.gameObject.name);
-//		//Debug.Log ("Tag: " + coll.gameObject.transform.GetChild(0).transform.GetChild(1).tag);
-//		if (coll.gameObject.CompareTag ("Virus_Tail")) {
-//			Debug.Log ("Collision of virus on this cell!", coll.gameObject);
-//			// when this cell gets hit by a virus, both be destroied
-//			//Destroy (coll.gameObject);
-//			infectCell();
-////			}
-//		}
-//	}
 
 	void OnMouseDown() {
 		if (hasVirus) {
@@ -81,12 +71,15 @@ public class CellBehaviour : MonoBehaviour {
 	void killCell() {
 		Destroy (gameObject);
 
-		// Reproduce viruses
-		for (int i = 0; i < VirusCount; i++) {
+	
+		// Time Elapsed is portionally to the virusattachtimelimit 
+		//
+
+		for (int i = 0; i < (TimeElapsed*2); i++) {
 				GameObject clone;//a clone of the virus
 				Vector2 cellPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y);
 	
-				float angle = i * 360 / VirusCount;
+			float angle = i * 360 / TimeElapsed;
 				Vector2 virusPosition = cellPosition + circularSpreadValue * new Vector2 (Mathf.Cos (angle * Mathf.Deg2Rad),
 	                                                                         Mathf.Sin (angle * Mathf.Deg2Rad));
 				//GameObject virusCollider = coll.gameObject;
