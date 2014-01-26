@@ -17,8 +17,7 @@ public class virus_bounce : MonoBehaviour {
 	void Awake () {
 		monitor = GameMonitor.getInstance ();
 		GoInDirection (angle, force);
-		monitor.virusCount += 1;
-		//rigidbody2D.velocity = new Vector2(x_force, y_force);
+		monitor.virusCount++;
 	}
 
 	public void GoInDirection(float angleIn, float forceIn){
@@ -26,13 +25,5 @@ public class virus_bounce : MonoBehaviour {
 		transform.Rotate(new Vector3(0,0,angleIn));
 		rigidbody2D.velocity = new Vector2 (Mathf.Cos (angleIn*Mathf.Deg2Rad), 
 		                                    Mathf.Sin (angleIn*Mathf.Deg2Rad)) *forceIn;
-	}
-
-	void FixedUpdate() {
-
-	}
-
-	void OnMouseDown() {
-		Debug.Log ("Clicked! Virus!", this.gameObject);
 	}
 }

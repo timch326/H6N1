@@ -36,11 +36,10 @@ public class CellBehaviour : MonoBehaviour {
 		transform.Rotate(0f, 0.0f, random_rotate_z);
 		VirusCount = Random.Range(5, 8);
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
-
+		monitor.cellCount++;
 	}
 	
 	void Start () {
-		monitor.cellCount++;
 	}
 	 
 	// Update is called once per frame

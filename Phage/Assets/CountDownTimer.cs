@@ -6,10 +6,11 @@ public class CountDownTimer : MonoBehaviour {
 	// Use this for initialization
 	public int level_time = 25;// 25 seconds
 	public float elasped_time = 0;
+	private GameMonitor monitor;
 
 	void Awake() {
+		monitor = GameMonitor.getInstance ();
 		gameObject.renderer.sortingLayerName = "Text";
-
 	}
 
 	void Start () {
@@ -22,7 +23,7 @@ public class CountDownTimer : MonoBehaviour {
 		UpdateTimerText (Mathf.RoundToInt(level_time-elasped_time) + " sec");
 		if (elasped_time >= level_time) {
 			Debug.Log("elasped time " + elasped_time);
-			Application.LoadLevel ("test_level_select_ck");		
+			monitor.loseGame();
 		}
 	
 	}

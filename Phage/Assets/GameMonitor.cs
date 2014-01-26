@@ -8,26 +8,28 @@ public class GameMonitor : MonoBehaviour {
 	public int infectedCellCount = 0;
 	public int cellCountLimit = 25;
 	private static GameMonitor instance;
-
+	private bool gameEnded = false;
 	
 	// Use this for initialization
 	void Awake () {
 		instance = this;
-		cellCount = 0;
-		infectedCellCount = 0;
-		virusCount = 0;
+		gameEnded = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (cellCount <= 0) {
-			Debug.Log ("Game Over");
-			Application.LoadLevel ("test_level_select_ck");
-		}
 
-		if (virusCount <= 0 && infectedCellCount <= 0) {
-			Debug.Log ("You Win!");
+		if (Input.GetMouseButton (0) && gameEnded) {
 			Application.LoadLevel ("test_level_select_ck");
+
+		}
+		if (gameEnded) return;
+
+		if (cellCount <= 0) {
+			loseGame ();
+		}
+		if (virusCount <= 0 && infectedCellCount <= 0) {
+			winGame ();
 		}
 	}
 
@@ -44,4 +46,28 @@ public class GameMonitor : MonoBehaviour {
 		return instance;
 	}
 
+	
+	public void winGame ()
+	{
+		Debug.Log ("You Win!");
+		GameObject winMessage = GameObject.FindGameObjectWithTag ("Win");
+		winMessage.GetComponent<SpriteRenderer> ().enabled = true;
+		gameEnded = true;
+		endGameCleanUp ();
+	}
+
+	public void loseGame ()
+	{
+		Debug.Log ("Game Over");
+		GameObject lossMessage = GameObject.FindGameObjectWithTag ("Loss");
+		lossMessage.GetComponent<SpriteRenderer> ().enabled = true;
+		gameEnded = true;
+		endGameCleanUp ();
+	}
+
+	private void endGameCleanUp() {
+		cellCount = 0;
+		infectedCellCount = 0;
+		virusCount = 0;
+	}
 }
