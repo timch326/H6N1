@@ -49,8 +49,10 @@
      <Compile Include="Assets\CellBehaviour.cs" />
      <Compile Include="Assets\Initialize.cs" />
      <Compile Include="Assets\LevelButton.cs" />
+     <Compile Include="Assets\dupcell.cs" />
      <Compile Include="Assets\level_button.cs" />
      <Compile Include="Assets\menu_button.cs" />
+     <Compile Include="Assets\no_dupcell.cs" />
      <Compile Include="Assets\virus_1.cs" />
      <Compile Include="Assets\virus_behaviour.cs" />
      <Compile Include="Assets\virus_bounce.cs" />
