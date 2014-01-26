@@ -28,6 +28,8 @@ public class CellBehaviour : MonoBehaviour {
 	float random_max = 1.0f;
 	// global counter for max number of performing duplication actions allowed
 	public static int duplicateLimit = 14;
+
+	public AudioClip squish;
 	
 	// Use this for initialization
 	void Awake () {
@@ -67,8 +69,12 @@ public class CellBehaviour : MonoBehaviour {
 		}
 	}
 	
-	void OnMouseDown() {
+	void OnMouseDown() { 
+
+
 		if (hasVirus) {
+			Debug.Log ("Playing Squish Sound");
+			audio.PlayOneShot(squish);
 			if (cureTapsMade >= cureCount) {
 				uninfectCell ();
 			}
