@@ -4,22 +4,19 @@ using System.Collections;
 public class CellBehaviour : MonoBehaviour {
 	
 	public GameObject spawn;
-	
-	static public bool isInitialState = true;
 	public GameObject Virus;
-	int VirusCount = 1;
+	
 	public float circularSpreadValue = 0.1f;
 	public float virusExplosionSpeed = 1000;
 	public float CellDuplicationInterval = 10; //seconds
-	public float VirusAttachTimeLimit = 6; //seconds
-	
-	public int life = 2;
-	
-	private float TimeElapsed = 0;
-	private float CellDuplicationTime;
-	
-	private bool hasVirus = false;
+	public float InfectionTimeLimit = 3; //seconds
+	//public int life = 2;
+
 	private Animator anim;
+	private float InfectionTime = 0;
+	private float LastDuplicationTime = 0;
+	private int VirusCount = 1;
+	private bool hasVirus = false;
 
 	public int cureCount = 5;
 	private int cureTapsMade = 0;
@@ -27,7 +24,6 @@ public class CellBehaviour : MonoBehaviour {
 	float random_min = -1.0f;
 	float random_max = 1.0f;
 	// global counter for max number of performing duplication actions allowed
-	public static int duplicateLimit = 14;
 
 	public AudioClip squish;
 	
@@ -38,34 +34,32 @@ public class CellBehaviour : MonoBehaviour {
 		transform.Rotate(0f, 0.0f, random_rotate_z);
 		VirusCount = Random.Range(5, 8);
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
-		GameMonitor.cellCount += 1;
 	}
 	
 	void Start () {
-		//startGame ();
-		
-		
+		GameMonitor.cellCount += 1;
 	}
-	
+	 
 	// Update is called once per frame
 	void Update() {
 		jitter ();
 		if (hasVirus) {
-			TimeElapsed += Time.deltaTime;
-			
-			if (VirusAttachTimeLimit <= TimeElapsed) {
-				//uninfectCell();
+			InfectionTime += Time.deltaTime;
+			gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText((Mathf.FloorToInt(InfectionTimeLimit-InfectionTime).ToString()));
+
+			if (InfectionTimeLimit <= InfectionTime) {
 				killCell(true);
-				TimeElapsed = 0;
-			} else {
-				gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText((Mathf.FloorToInt(VirusAttachTimeLimit-TimeElapsed).ToString()) );
-				
+				InfectionTime = 0;
 			}
 		}
 		
-		CellDuplicationTime += Time.deltaTime;
-		if ((life >= 0) && (CellDuplicationInterval <= CellDuplicationTime)) {
-			duplicate(life--);
+		LastDuplicationTime += Time.deltaTime;
+		if (CellDuplicationInterval <= LastDuplicationTime) {
+
+			if (!GameMonitor.HasReachedCellLimit()){
+				duplicate();
+			}
+			LastDuplicationTime = 0;
 		}
 	}
 	
@@ -84,21 +78,20 @@ public class CellBehaviour : MonoBehaviour {
 	
 	public void killCell(bool makeVirus) {
 		Destroy (gameObject);
-		GameMonitor.cellCount-= 1;
+		GameMonitor.cellCount -= 1;
 
-		if (!makeVirus)
-			return;
-		else 
-			spreadVirus ();
+		if (makeVirus == true) {
+			spreadVirus();
+		}
 	}
 	
 	public void infectCell() {
-		if (hasVirus)
-			return;
-		hasVirus = true;
-		anim.SetTrigger ("toInfected");
-		Debug.Log ("Infect Cell");
-		// Set the sprite from "healthy" to "infected"
+		if (!hasVirus) {
+			hasVirus = true;
+			anim.SetTrigger ("toInfected");
+			Debug.Log ("Infect Cell");
+			// Set the sprite from "healthy" to "infected"
+		}
 	}
 	
 	public void uninfectCell() {
@@ -106,7 +99,7 @@ public class CellBehaviour : MonoBehaviour {
 		anim.SetTrigger ("toHealthy");
 		Debug.Log ("Uninfect Cell");
 		cureTapsMade = 0;
-		TimeElapsed = 0;
+		InfectionTime = 0;
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
 		// Set the sprite from "infected" to "healthy"
 	}
@@ -116,7 +109,7 @@ public class CellBehaviour : MonoBehaviour {
 	}
 
 	private void spreadVirus () {
-		float currVirusCount = VirusCount * TimeElapsed / VirusAttachTimeLimit;
+		float currVirusCount = VirusCount * InfectionTime / InfectionTimeLimit;
 		// Reproduce viruses
 		for (int i = 0; i < currVirusCount; i++) {
 			GameObject clone;
@@ -140,19 +133,12 @@ public class CellBehaviour : MonoBehaviour {
 		transform.Translate ((dx / d), (dy / d), 0); 
 	}
 	
-	private void duplicate(int life){
-		if(duplicateLimit <= 0){
-			return;
-		}
+	private void duplicate(){
+		Vector3 temp_spawn_location =  transform.position; 
+		temp_spawn_location.x += 1;
+		Vector3 spawn_location = temp_spawn_location;
 		
-		if (life >= 0) {
-			Vector3 temp_spawn_location =  transform.position; 
-			temp_spawn_location.x += 1;
-			Vector3 spawn_location = temp_spawn_location;
-			
-			GameObject temp_spawn_cell = (GameObject)Instantiate (spawn, spawn_location, transform.rotation);
-			// decrement the duplicateLimit as weve just splitted a cell
-			--duplicateLimit;
-		}
+		GameObject temp_spawn_cell = (GameObject)Instantiate (spawn, spawn_location, transform.rotation);
+		// decrement the duplicateLimit as weve just splitted a cell
 	}
 }
