@@ -34,15 +34,8 @@ public class virus_behaviour : MonoBehaviour {
 
 		if (!stop_rotation) {
 
-		//transform.Rotate(0f, 0.0f, random_rotate_z);  // does nothing, just a bad guess
-		
-		if (random_reset_threshold < 0) {
-			random_reset_threshold = threshold;
-			random_rotate_z = Random.Range(random_min, random_max);
-		} else {
-			random_reset_threshold--;	
-		}
-		}
+						transform.Rotate (0f, 0.0f, random_rotate_z);  // does nothing, just a bad guess
+				}
 
 
 		if (isFading) {

@@ -53,6 +53,7 @@
      <Compile Include="Assets\level_button.cs" />
      <Compile Include="Assets\menu_button.cs" />
      <Compile Include="Assets\no_dupcell.cs" />
+     <Compile Include="Assets\phage_rotate_test.cs" />
      <Compile Include="Assets\virus_1.cs" />
      <Compile Include="Assets\virus_behaviour.cs" />
      <Compile Include="Assets\virus_bounce.cs" />
