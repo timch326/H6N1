@@ -12,6 +12,7 @@ public class CellBehaviour : MonoBehaviour {
 	public float virusExplosionSpeed = 1000;
 	public float CellDuplicationInterval = 10; //seconds
 	public float VirusAttachTimeLimit = 6; //seconds
+
 	public int life = 2;
 
 	private float TimeElapsed = 0;
@@ -22,7 +23,8 @@ public class CellBehaviour : MonoBehaviour {
 
 	float random_min = -1.0f;
 	float random_max = 1.0f;
-	int duplicateLimit = 3;
+	// global counter for max number of performing duplication actions allowed
+	public static int duplicateLimit = 14;
 
 	// Use this for initialization
 	void Awake () {
@@ -50,8 +52,8 @@ public class CellBehaviour : MonoBehaviour {
 		}
 
 		CellDuplicationTime += Time.deltaTime;
-		if (CellDuplicationInterval <= CellDuplicationTime) {
-			duplicate(--life);
+		if ((life >= 0) && (CellDuplicationInterval <= CellDuplicationTime)) {
+			duplicate(life--);
 		}
 	}
 
@@ -114,12 +116,18 @@ public class CellBehaviour : MonoBehaviour {
 	}
 
 	void duplicate(int life){
+		if(duplicateLimit <= 0){
+			return;
+		}
+
 		if (life >= 0) {
 			Vector3 temp_spawn_location =  transform.position; 
 			temp_spawn_location.x += 1;
 			Vector3 spawn_location = temp_spawn_location;
 
 			GameObject temp_spawn_cell = (GameObject)Instantiate (spawn, spawn_location, transform.rotation);
+			// decrement the duplicateLimit as weve just splitted a cell
+			--duplicateLimit;
 		}
 	}
 }
