@@ -65,6 +65,9 @@ public class virus_behaviour : MonoBehaviour {
 		isFading = true;
 		stop_rotation = true;
 		transform.parent.rigidbody2D.velocity = new Vector2 (0,0);
+		if (transform.collider2D.enabled) {
+			transform.collider2D.enabled = false;
+		}
 	}
 
 }

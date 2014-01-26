@@ -24,8 +24,8 @@ public class virus_tail : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision) {
 		if (collision.gameObject.tag == "Cell")
 		{
-			transform.parent.gameObject.GetComponent<virus_behaviour>().virusFade();
 			collision.gameObject.GetComponent<CellBehaviour>().infectCell();
+			transform.parent.gameObject.GetComponent<virus_behaviour>().virusFade();
 		}
 	}
 

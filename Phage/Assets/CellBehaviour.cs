@@ -20,6 +20,9 @@ public class CellBehaviour : MonoBehaviour {
 	
 	private bool hasVirus = false;
 	private Animator anim;
+
+	public int cureCount = 5;
+	private int cureTapsMade = 0;
 	
 	float random_min = -1.0f;
 	float random_max = 1.0f;
@@ -49,8 +52,8 @@ public class CellBehaviour : MonoBehaviour {
 			TimeElapsed += Time.deltaTime;
 			
 			if (VirusAttachTimeLimit <= TimeElapsed) {
-				uninfectCell();
-				Debug.Log ("Hello Time Elapsed!", this);
+				//uninfectCell();
+				killCell(true);
 				TimeElapsed = 0;
 			} else {
 				gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText((Mathf.FloorToInt(VirusAttachTimeLimit-TimeElapsed).ToString()) );
@@ -66,35 +69,21 @@ public class CellBehaviour : MonoBehaviour {
 	
 	void OnMouseDown() {
 		if (hasVirus) {
-			killCell ();
-			GameMonitor.cellCount-= 1;
-			Debug.Log ("RIP");
-		} else {
-			Debug.Log ("I'm Healthy!");
+			if (cureTapsMade >= cureCount) {
+				uninfectCell ();
+			}
+			cureTapsMade++;
 		}
 	}
 	
-	void killCell() {
+	public void killCell(bool makeVirus) {
 		Destroy (gameObject);
-		float currVirusCount = VirusCount * TimeElapsed / VirusAttachTimeLimit;
-		// Reproduce viruses
-		for (int i = 0; i < currVirusCount; i++) {
-			GameObject clone;//a clone of the virus
-			Vector2 cellPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y);
-			
-			float angle = i * 360 / currVirusCount;
-			Vector2 virusPosition = cellPosition + circularSpreadValue * new Vector2 (Mathf.Cos (angle * Mathf.Deg2Rad),
-			                                                                          Mathf.Sin (angle * Mathf.Deg2Rad));
-			//GameObject virusCollider = coll.gameObject;
-			//Vector2 virusColliderDirection = virusCollider.rigidbody2D.velocity;
-			
-			// make new clone and change its facing diunirection
-			//Quaternion rotation = Quaternion.Euler(CloneRotationVector);
-			clone = Instantiate (Virus, virusPosition, Quaternion.identity) as GameObject;
-			virus_bounce newVirusObject = clone.GetComponent<virus_bounce> ();
-			
-			newVirusObject.GoInDirection (angle, virusExplosionSpeed);
-		}
+		GameMonitor.cellCount-= 1;
+
+		if (!makeVirus)
+			return;
+		else 
+			spreadVirus ();
 	}
 	
 	public void infectCell() {
@@ -110,9 +99,30 @@ public class CellBehaviour : MonoBehaviour {
 		hasVirus = false;
 		anim.SetTrigger ("toHealthy");
 		Debug.Log ("Uninfect Cell");
+		cureTapsMade = 0;
+		TimeElapsed = 0;
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
 		// Set the sprite from "infected" to "healthy"
-		
+	}
+
+	public bool isInfected() {
+		return hasVirus;
+	}
+
+	private void spreadVirus () {
+		float currVirusCount = VirusCount * TimeElapsed / VirusAttachTimeLimit;
+		// Reproduce viruses
+		for (int i = 0; i < currVirusCount; i++) {
+			GameObject clone;
+			//a clone of the virus
+			Vector2 cellPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y);
+			float angle = i * 360 / currVirusCount;
+			Vector2 virusPosition = cellPosition + circularSpreadValue * new Vector2 (Mathf.Cos (angle * Mathf.Deg2Rad), Mathf.Sin (angle * Mathf.Deg2Rad));
+			// make new clone and change its facing diunirection
+			clone = Instantiate (Virus, virusPosition, Quaternion.identity) as GameObject;
+			virus_bounce newVirusObject = clone.GetComponent<virus_bounce> ();
+			newVirusObject.GoInDirection (angle, virusExplosionSpeed);
+		}
 	}
 	
 	private void jitter() {
@@ -124,7 +134,7 @@ public class CellBehaviour : MonoBehaviour {
 		transform.Translate ((dx / d), (dy / d), 0); 
 	}
 	
-	void duplicate(int life){
+	private void duplicate(int life){
 		if(duplicateLimit <= 0){
 			return;
 		}
