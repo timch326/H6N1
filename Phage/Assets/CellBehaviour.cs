@@ -67,6 +67,8 @@ public class CellBehaviour : MonoBehaviour {
 
 
 		if (hasVirus) {
+			anim.SetTrigger ("cure_click");
+
 			Debug.Log ("Playing Squish Sound");
 			audio.PlayOneShot(squish);
 			if (cureTapsMade >= cureCount) {
@@ -98,7 +100,7 @@ public class CellBehaviour : MonoBehaviour {
 	
 	public void uninfectCell() {
 		hasVirus = false;
-		anim.SetTrigger ("toHealthy");
+		//anim.SetTrigger ("toHealthy");
 		Debug.Log ("Uninfect Cell");
 		cureTapsMade = 0;
 		InfectionTime = 0;
