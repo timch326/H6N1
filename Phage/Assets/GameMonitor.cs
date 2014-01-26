@@ -7,8 +7,9 @@ public class GameMonitor : MonoBehaviour {
 	static public int cellCountLimit = 12;
 	
 	// Use this for initialization
-	void Start () {
-		
+	void Awake () {
+		Debug.Log ("Count is currently : " + cellCount);
+		cellCount = 0;
 	}
 	
 	// Update is called once per frame
