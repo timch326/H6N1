@@ -9,11 +9,16 @@ public class CellBehaviour : MonoBehaviour {
 	public float circularSpreadValue = 0.1f;
 	public float virusExplosionSpeed = 1000;
 
-	public float VirusAttachTimeLimit = 3; //seconds
+	public float VirusAttachTimeLimit = 6; //seconds
 	private float TimeElapsed = 0;
 	private bool hasVirus = false;
+	private Animator anim;
 	
 	// Use this for initialization
+	void Awake () {
+		anim = GetComponent<Animator> ();
+	}
+
 	void Start () {
 		//startGame ();
 	}
@@ -34,17 +39,17 @@ public class CellBehaviour : MonoBehaviour {
 
 
 	// Destroy overlapping cells 
-	void OnCollisionEnter2D(Collision2D coll) {
-		Debug.Log ("I hit a: " + coll.gameObject.name);
-		//Debug.Log ("Tag: " + coll.gameObject.transform.GetChild(0).transform.GetChild(1).tag);
-		if (coll.gameObject.CompareTag ("Virus_Tail")) {
-			Debug.Log ("Collision of virus on this cell!", coll.gameObject);
-			// when this cell gets hit by a virus, both be destroied
-			//Destroy (coll.gameObject);
-			infectCell();
-//			}
-		}
-	}
+//	void OnCollisionEnter2D(Collision2D coll) {
+//		Debug.Log ("I hit a: " + coll.gameObject.name);
+//		//Debug.Log ("Tag: " + coll.gameObject.transform.GetChild(0).transform.GetChild(1).tag);
+//		if (coll.gameObject.CompareTag ("Virus_Tail")) {
+//			Debug.Log ("Collision of virus on this cell!", coll.gameObject);
+//			// when this cell gets hit by a virus, both be destroied
+//			//Destroy (coll.gameObject);
+//			infectCell();
+////			}
+//		}
+//	}
 
 	void OnMouseDown() {
 		if (hasVirus) {
@@ -79,12 +84,18 @@ public class CellBehaviour : MonoBehaviour {
 		}
 		
 	public void infectCell() {
+		if (hasVirus)
+			return;
 		hasVirus = true;
+		anim.SetTrigger ("toInfected");
+		Debug.Log ("Infect Cell");
 		// Set the sprite from "healthy" to "infected"
 	}
 
 	public void uninfectCell() {
 		hasVirus = false;
+		anim.SetTrigger ("toHealthy");
+		Debug.Log ("Uninfect Cell");
 		// Set the sprite from "infected" to "healthy"
 
 }
