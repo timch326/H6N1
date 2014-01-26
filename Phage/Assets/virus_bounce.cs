@@ -27,4 +27,8 @@ public class virus_bounce : MonoBehaviour {
 	void FixedUpdate() {
 
 	}
+
+	void OnMouseDown() {
+		Debug.Log ("Clicked! Virus!", this.gameObject);
+	}
 }
