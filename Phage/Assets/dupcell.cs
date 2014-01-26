@@ -33,8 +33,6 @@ public class cell : MonoBehaviour {
 		temp_spawn_location.x += 1;
 		spawn_location = temp_spawn_location;
 		num_life = 3; 
-
-
 	}
 	
 	// Update is called once per frame
@@ -87,6 +85,5 @@ public class cell : MonoBehaviour {
 		if (life >= 0) {
 			GameObject temp_spawn_cell = (GameObject)Instantiate (spawn, spawn_location, transform.rotation);
 		}
-
 	}
 }

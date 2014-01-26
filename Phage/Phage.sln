@@ -17,10 +17,14 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+<<<<<<< HEAD
 																										GlobalSection(MonoDevelopProperties) = preSolution
 =======
 																											GlobalSection(MonoDevelopProperties) = preSolution
 >>>>>>> e7d9030d9e8ad333794dc7937bada0bd0eae6cbe
+=======
+																									GlobalSection(MonoDevelopProperties) = preSolution
+>>>>>>> Game now returns to a menu screen when all cells die.
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

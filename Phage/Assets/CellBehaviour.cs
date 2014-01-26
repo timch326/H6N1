@@ -31,6 +31,8 @@ public class CellBehaviour : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		float random_rotate_z = Random.Range(random_min, random_max);
 		transform.Rotate(0f, 0.0f, random_rotate_z);
+		GameMonitor.cellCount += 1;
+
 	}
 
 	void Start () {
@@ -46,7 +48,6 @@ public class CellBehaviour : MonoBehaviour {
 
 			if (VirusAttachTimeLimit <= TimeElapsed) {
 				uninfectCell();
-				Debug.Log ("Hello Time Elapsed!", this);
 				TimeElapsed = 0;
 			}
 		}
@@ -68,6 +69,8 @@ public class CellBehaviour : MonoBehaviour {
 
 	void killCell() {
 		Destroy (gameObject);
+		GameMonitor.cellCount -= 1;
+		Debug.Log ("Cell Died, " + GameMonitor.cellCount + " left.");
 
 		// Reproduce viruses
 		for (int i = 0; i < VirusCount; i++) {
@@ -94,14 +97,12 @@ public class CellBehaviour : MonoBehaviour {
 			return;
 		hasVirus = true;
 		anim.SetTrigger ("toInfected");
-		Debug.Log ("Infect Cell");
 		// Set the sprite from "healthy" to "infected"
 	}
 
 	public void uninfectCell() {
 		hasVirus = false;
 		anim.SetTrigger ("toHealthy");
-		Debug.Log ("Uninfect Cell");
 		// Set the sprite from "infected" to "healthy"
 
 	}
