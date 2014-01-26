@@ -6,13 +6,12 @@ public class menu_button : MonoBehaviour {
 	public bool isQuit=false;
 	
 	public void OnMouseEnter(){
-		//change text color
-		renderer.material.color=Color.red;
+		GetComponent<SpriteRenderer> ().color = Color.grey;
 	}
 	
 	public void OnMouseExit(){
 		//change text color
-		renderer.material.color=Color.white;
+		GetComponent<SpriteRenderer> ().color =Color.white;
 	}
 	
 	public void OnMouseUp(){
