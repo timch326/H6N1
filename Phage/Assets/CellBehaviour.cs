@@ -3,29 +3,42 @@ using System.Collections;
 
 public class CellBehaviour : MonoBehaviour {
 
+	public GameObject spawn;
+
 	static public bool isInitialState = true;
 	public GameObject Virus;
 	public int VirusCount = 1;
 	public float circularSpreadValue = 0.1f;
 	public float virusExplosionSpeed = 1000;
-
+	public float CellDuplicationInterval = 10; //seconds
 	public float VirusAttachTimeLimit = 6; //seconds
+	public int life = 1;
+
 	private float TimeElapsed = 0;
+	private float CellDuplicationTime;
+
 	private bool hasVirus = false;
 	private Animator anim;
-	
+
+	float random_min = -1.0f;
+	float random_max = 1.0f;
+	int duplicateLimit = 3;
+
 	// Use this for initialization
 	void Awake () {
 		anim = GetComponent<Animator> ();
+		float random_rotate_z = Random.Range(random_min, random_max);
+		transform.Rotate(0f, 0.0f, random_rotate_z);
 	}
 
 	void Start () {
 		//startGame ();
+
 	}
 	
 	// Update is called once per frame
 	void Update() {
-
+		jitter ();
 		if (hasVirus) {
 			TimeElapsed += Time.deltaTime;
 
@@ -34,6 +47,11 @@ public class CellBehaviour : MonoBehaviour {
 				Debug.Log ("Hello Time Elapsed!", this);
 				TimeElapsed = 0;
 			}
+		}
+
+		CellDuplicationTime += Time.deltaTime;
+		if (CellDuplicationInterval <= CellDuplicationTime) {
+			duplicate(--life);
 		}
 	}
 
@@ -98,5 +116,24 @@ public class CellBehaviour : MonoBehaviour {
 		Debug.Log ("Uninfect Cell");
 		// Set the sprite from "infected" to "healthy"
 
-}
+	}
+
+	private void jitter() {
+		float dx = Random.Range(-10, 10);
+		float dy = Random.Range(-10, 10);
+		float d = 10;
+
+		// if the cell collides with a wall we bounce the cell off the wall 
+		transform.Translate ((dx / d), (dy / d), 0); 
+	}
+
+	void duplicate(int life){
+		if (life >= 0) {
+			Vector3 temp_spawn_location =  transform.position; 
+			temp_spawn_location.x += 1;
+			Vector3 spawn_location = temp_spawn_location;
+
+			GameObject temp_spawn_cell = (GameObject)Instantiate (spawn, spawn_location, transform.rotation);
+		}
+	}
 }
