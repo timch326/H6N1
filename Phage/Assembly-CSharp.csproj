@@ -49,6 +49,7 @@
      <Compile Include="Assets\CellBehaviour.cs" />
      <Compile Include="Assets\CountDownTimer.cs" />
      <Compile Include="Assets\GameMonitor.cs" />
+     <Compile Include="Assets\GameMusic.cs" />
      <Compile Include="Assets\Initialize.cs" />
      <Compile Include="Assets\LevelButton.cs" />
      <Compile Include="Assets\Timer.cs" />
@@ -59,6 +60,7 @@
      <Compile Include="Assets\menu_button.cs" />
      <Compile Include="Assets\no_dupcell.cs" />
      <Compile Include="Assets\phage_rotate_test.cs" />
+     <Compile Include="Assets\sfx_background_music.cs" />
      <Compile Include="Assets\sfx_music_button.cs" />
      <Compile Include="Assets\virus_1.cs" />
      <Compile Include="Assets\virus_behaviour.cs" />
