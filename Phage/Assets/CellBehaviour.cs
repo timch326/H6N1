@@ -11,8 +11,8 @@ public class CellBehaviour : MonoBehaviour {
 	public float circularSpreadValue = 0.1f;
 	public float virusExplosionSpeed = 1000;
 	public float CellDuplicationInterval = 10; //seconds
-	float VirusAttachTimeLimit ; //seconds
-	public int life = 1;
+	public float VirusAttachTimeLimit = 6; //seconds
+	public int life = 2;
 
 	private float TimeElapsed = 0;
 	private float CellDuplicationTime;
@@ -29,8 +29,6 @@ public class CellBehaviour : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		float random_rotate_z = Random.Range(random_min, random_max);
 		transform.Rotate(0f, 0.0f, random_rotate_z);
-
-		VirusAttachTimeLimit = Random.Range (5,8);
 	}
 
 	void Start () {
@@ -57,8 +55,6 @@ public class CellBehaviour : MonoBehaviour {
 		}
 	}
 
-
-
 	void OnMouseDown() {
 		if (hasVirus) {
 			killCell ();
@@ -71,15 +67,12 @@ public class CellBehaviour : MonoBehaviour {
 	void killCell() {
 		Destroy (gameObject);
 
-	
-		// Time Elapsed is portionally to the virusattachtimelimit 
-		//
-
-		for (int i = 0; i < (TimeElapsed*2); i++) {
+		// Reproduce viruses
+		for (int i = 0; i < VirusCount; i++) {
 				GameObject clone;//a clone of the virus
 				Vector2 cellPosition = new Vector2 (transform.localPosition.x, transform.localPosition.y);
 	
-			float angle = i * 360 / TimeElapsed;
+				float angle = i * 360 / VirusCount;
 				Vector2 virusPosition = cellPosition + circularSpreadValue * new Vector2 (Mathf.Cos (angle * Mathf.Deg2Rad),
 	                                                                         Mathf.Sin (angle * Mathf.Deg2Rad));
 				//GameObject virusCollider = coll.gameObject;
