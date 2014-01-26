@@ -1,0 +1,40 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class phage_rotate_test : MonoBehaviour {
+
+	float random_rotate_z;
+	int random_reset_threshold;
+	int threshold = 100;
+	float random_min = -2.0f;
+	float random_max = 2.0f;
+	bool infected = false;
+	// Use this for initialization
+	void Start () {
+	
+		random_rotate_z = Random.Range(random_min, random_max);
+		random_reset_threshold = threshold;
+	}
+
+
+
+	public void set_infected(bool i) {
+		infected = i;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (infected) {
+			transform.Rotate(0f, 0.0f, random_rotate_z);  // does nothing, just a bad guess
+			
+			if (random_reset_threshold < 0) {
+				random_reset_threshold = threshold;
+				random_rotate_z = Random.Range(random_min, random_max);
+			} else {
+				random_reset_threshold--;	
+			}
+
+		}
+			
+	}
+}

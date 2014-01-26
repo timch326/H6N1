@@ -12,8 +12,8 @@ public class CellBehaviour : MonoBehaviour {
 	public float virusExplosionSpeed = 1000;
 	public float CellDuplicationInterval = 10; //seconds
 	public float VirusAttachTimeLimit = 6; //seconds
-	// the number of times each cell can duplicate
-	public int life = 1;
+
+	public int life = 2;
 
 	private float TimeElapsed = 0;
 	private float CellDuplicationTime;
@@ -56,20 +56,6 @@ public class CellBehaviour : MonoBehaviour {
 			duplicate(life--);
 		}
 	}
-
-
-	// Destroy overlapping cells 
-//	void OnCollisionEnter2D(Collision2D coll) {
-//		Debug.Log ("I hit a: " + coll.gameObject.name);
-//		//Debug.Log ("Tag: " + coll.gameObject.transform.GetChild(0).transform.GetChild(1).tag);
-//		if (coll.gameObject.CompareTag ("Virus_Tail")) {
-//			Debug.Log ("Collision of virus on this cell!", coll.gameObject);
-//			// when this cell gets hit by a virus, both be destroied
-//			//Destroy (coll.gameObject);
-//			infectCell();
-////			}
-//		}
-//	}
 
 	void OnMouseDown() {
 		if (hasVirus) {
