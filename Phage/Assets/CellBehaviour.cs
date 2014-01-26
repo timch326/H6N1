@@ -134,11 +134,12 @@ public class CellBehaviour : MonoBehaviour {
 	}
 	
 	private void duplicate(){
-		Vector3 temp_spawn_location =  transform.position; 
-		temp_spawn_location.x += 1;
-		Vector3 spawn_location = temp_spawn_location;
-		
-		GameObject temp_spawn_cell = (GameObject)Instantiate (spawn, spawn_location, transform.rotation);
-		// decrement the duplicateLimit as weve just splitted a cell
+		Vector3 ChildCellPosition =  transform.position; 
+		ChildCellPosition.x += 1;
+
+		GameObject ChildCell = (GameObject) Instantiate (spawn, ChildCellPosition, transform.rotation);
+		if (isInfected ()) {
+			ChildCell.GetComponent<CellBehaviour>().infectCell();
+		}
 	}
 }
