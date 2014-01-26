@@ -11,10 +11,13 @@ public class virus_bounce : MonoBehaviour {
 	public float angle = -90;
 	public float force = 1000;
 
+	private GameMonitor monitor;
+
 	// Use this for initialization
 	void Awake () {
+		monitor = GameMonitor.getInstance ();
 		GoInDirection (angle, force);
-		GameMonitor.virusCount += 1;
+		monitor.virusCount += 1;
 		//rigidbody2D.velocity = new Vector2(x_force, y_force);
 	}
 

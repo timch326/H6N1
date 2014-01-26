@@ -15,11 +15,13 @@ public class virus_behaviour : MonoBehaviour {
 	int threshold = 100;
 	float random_min = -1.0f;
 	float random_max = 1.0f;
+
+	private GameMonitor monitor;
 	// Use this for initialization
 	void Awake () {
-
-				random_rotate_z = Random.Range(random_min, random_max);
-				random_reset_threshold = threshold;
+		monitor = GameMonitor.getInstance ();
+		random_rotate_z = Random.Range(random_min, random_max);
+		random_reset_threshold = threshold;
 	}
 	
 
@@ -47,7 +49,7 @@ public class virus_behaviour : MonoBehaviour {
 								transform.Rotate(0f, 0.0f, 0f); 
 								isFading = false;
 								Destroy (this.gameObject.transform.parent.gameObject);
-								GameMonitor.virusCount--;
+								monitor.virusCount--;
 						}
 			
 			

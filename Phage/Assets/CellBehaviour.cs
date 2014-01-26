@@ -5,6 +5,7 @@ public class CellBehaviour : MonoBehaviour {
 	
 	public GameObject spawn;
 	public GameObject Virus;
+	public GameMonitor monitor;
 	
 	public float circularSpreadValue = 0.1f;
 	public float virusExplosionSpeed = 1000;
@@ -30,14 +31,16 @@ public class CellBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		anim = GetComponent<Animator> ();
+		monitor = GameMonitor.getInstance ();
 		float random_rotate_z = Random.Range(random_min, random_max);
 		transform.Rotate(0f, 0.0f, random_rotate_z);
 		VirusCount = Random.Range(5, 8);
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
+
 	}
 	
 	void Start () {
-		GameMonitor.cellCount += 1;
+		monitor.cellCount++;
 	}
 	 
 	// Update is called once per frame
@@ -56,7 +59,7 @@ public class CellBehaviour : MonoBehaviour {
 		LastDuplicationTime += Time.deltaTime;
 		if (CellDuplicationInterval <= LastDuplicationTime) {
 
-			if (!GameMonitor.HasReachedCellLimit()){
+			if (!monitor.HasReachedCellLimit()){
 				duplicate();
 			}
 			LastDuplicationTime = 0;
@@ -80,9 +83,9 @@ public class CellBehaviour : MonoBehaviour {
 	
 	public void killCell(bool makeVirus) {
 		Destroy (gameObject);
-		GameMonitor.cellCount -= 1;
+		monitor.cellCount -= 1;
 		if (hasVirus) {
-			GameMonitor.infectedCellCount -= 1;
+			monitor.infectedCellCount -= 1;
 		}
 
 		if (makeVirus == true) {
@@ -94,7 +97,7 @@ public class CellBehaviour : MonoBehaviour {
 		if (!hasVirus) {
 			hasVirus = true;
 			anim.SetTrigger ("toInfected");
-			GameMonitor.infectedCellCount++;
+			monitor.infectedCellCount++;
 		}
 	}
 	
@@ -105,7 +108,7 @@ public class CellBehaviour : MonoBehaviour {
 		cureTapsMade = 0;
 		InfectionTime = 0;
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
-		GameMonitor.infectedCellCount--;
+		monitor.infectedCellCount--;
 	}
 
 	public bool isInfected() {
