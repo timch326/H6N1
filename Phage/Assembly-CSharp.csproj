@@ -49,6 +49,7 @@
      <Compile Include="Assets\CellBehaviour.cs" />
      <Compile Include="Assets\Initialize.cs" />
      <Compile Include="Assets\LevelButton.cs" />
+     <Compile Include="Assets\boundary_bounce.cs" />
      <Compile Include="Assets\dupcell.cs" />
      <Compile Include="Assets\home_button.cs" />
      <Compile Include="Assets\level_button.cs" />
