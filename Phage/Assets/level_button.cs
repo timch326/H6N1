@@ -3,7 +3,7 @@ using System.Collections;
 
 public class level_button : MonoBehaviour {
 	
-
+	public int level;
 	
 	public void OnMouseEnter(){
 		//change text color
@@ -17,7 +17,7 @@ public class level_button : MonoBehaviour {
 	
 	public void OnMouseUp(){
 
-			Application.LoadLevel(0);
+			Application.LoadLevel(level);
 
 	}
 	
