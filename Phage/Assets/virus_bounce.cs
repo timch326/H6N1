@@ -14,6 +14,7 @@ public class virus_bounce : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		GoInDirection (angle, force);
+		GameMonitor.virusCount += 1;
 		//rigidbody2D.velocity = new Vector2(x_force, y_force);
 	}
 

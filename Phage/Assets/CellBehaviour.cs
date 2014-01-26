@@ -79,6 +79,9 @@ public class CellBehaviour : MonoBehaviour {
 	public void killCell(bool makeVirus) {
 		Destroy (gameObject);
 		GameMonitor.cellCount -= 1;
+		if (hasVirus) {
+			GameMonitor.infectedCellCount -= 1;
+		}
 
 		if (makeVirus == true) {
 			spreadVirus();
@@ -89,8 +92,7 @@ public class CellBehaviour : MonoBehaviour {
 		if (!hasVirus) {
 			hasVirus = true;
 			anim.SetTrigger ("toInfected");
-			Debug.Log ("Infect Cell");
-			// Set the sprite from "healthy" to "infected"
+			GameMonitor.infectedCellCount++;
 		}
 	}
 	
@@ -101,7 +103,7 @@ public class CellBehaviour : MonoBehaviour {
 		cureTapsMade = 0;
 		InfectionTime = 0;
 		gameObject.GetComponentsInChildren<Timer>()[0].UpdateTimerText("" );
-		// Set the sprite from "infected" to "healthy"
+		GameMonitor.infectedCellCount--;
 	}
 
 	public bool isInfected() {

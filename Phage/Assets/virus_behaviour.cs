@@ -3,10 +3,6 @@ using System.Collections;
 
 public class virus_behaviour : MonoBehaviour {
 
-
-
-
-
 	public float fadeValue = 125;
 	public float currentTime = 0;
 	public float timeItTakesToFade = 1f;
@@ -51,6 +47,7 @@ public class virus_behaviour : MonoBehaviour {
 								transform.Rotate(0f, 0.0f, 0f); 
 								isFading = false;
 								Destroy (this.gameObject.transform.parent.gameObject);
+								GameMonitor.virusCount--;
 						}
 			
 			
